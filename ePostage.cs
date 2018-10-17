@@ -146,7 +146,7 @@ namespace IBePostage
         public string code { get; set; }
         public string message { get; set; }
     }
-   
+
 
     public class metadata
     {
@@ -189,6 +189,8 @@ namespace IBePostage
     public class Usps
     {
         public string mail_class { get; set; }
+        public string entry_facility { get; set; }
+        public string ddu_facility_name { get; set; }
         public string shape { get; set; }
         public string image_size { get; set; }
         public List<string> services { get; set; }
@@ -202,11 +204,9 @@ namespace IBePostage
 
     }
 
-    
+
     public class OpenAndDistribute
-    { 
-        public string facility_type { get; set; }
-        public string ddu_facility_name{ get; set; }
+    {
         public string container { get; set; }
         public string enclosed_mail_class { get; set; }
         public string enclosed_shape { get; set; }
@@ -240,7 +240,7 @@ namespace IBePostage
         public Usps usps { get; set; }
         public string request_id { get; set; }
     }
-    
+
     public class Fee
     {
         public string name { get; set; }
@@ -281,7 +281,7 @@ namespace IBePostage
 
     public class ManifestResponse
     {
-        public UspsManifestResponse [] usps { get; set; }
+        public UspsManifestResponse[] usps { get; set; }
 
     }
 
@@ -293,7 +293,7 @@ namespace IBePostage
 
         public LabelResponse CreateLabel(LabelRequest labelRequest)
         {
-           
+
             string svcCredentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(username + ":" + password));
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(" https://" + url + "/v1/labels");
@@ -337,12 +337,12 @@ namespace IBePostage
                     {
                         responseText = reader.ReadToEnd();
                         ApiError response = JsonConvert.DeserializeObject<ApiError>(responseText);
-                        throw new ApiException((int) resp.StatusCode, response);
+                        throw new ApiException((int)resp.StatusCode, response);
                     }
-                     
+
                 }
                 return null;
-            }           
+            }
         }
 
 
@@ -418,7 +418,7 @@ namespace IBePostage
                 ApiError myError = new ApiError();
                 myError.code = "404";
                 myError.message = "Code 404.  Label is not found or already voided.";
-                throw new ApiException(404,myError);               
+                throw new ApiException(404, myError);
             }
         }
 
